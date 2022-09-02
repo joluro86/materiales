@@ -58,8 +58,7 @@ def concatenar(pedidos, indicador):
             if final_str=='A':
                 p.codigo= str(my_str[:-1])
         except:
-            pass
-       
+            pass       
         
         p.concatenacion = str(p.pedido + "-" + p.codigo)
         p.save()
@@ -76,7 +75,6 @@ def gestionarbd(request):
 def calculo_faltantes_fenix(request):
     faltantes=[]
     pedidos_perseo = matperseo.objects.all()
-    cont=0
     for pedido_perseo in pedidos_perseo:
         
         try:
@@ -120,11 +118,10 @@ def calculo_faltantes_fenix(request):
 
     calculo_numero_acta()
 
-
     return render(request, "index.html")
 
 def calculo_numero_acta():
-    acta= Acta.objects.first()
+    acta= NumeroActa.objects.first()
     pedidos_perseo = matperseo.objects.all()
     con=1
  
@@ -144,7 +141,6 @@ def calculo_numero_acta():
                 faltante.save()                        
         except:
             print("error en el acta")
-
 
 
 

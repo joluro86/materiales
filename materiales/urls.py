@@ -20,7 +20,7 @@ from controlmateriales.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', index, name="index"),
+    path('', index, name="index"),
     path('gestionbd/', gestionarbd, name="gestionbd"),
     path('reiniciar/', reiniciar, name="reiniciar"),
     path('faltantes_fenix/', calculo_faltantes_fenix, name="faltantesenperseo"),

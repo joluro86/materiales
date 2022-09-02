@@ -1,6 +1,6 @@
 from django.db import models
 
-class Acta(models.Model):
+class NumeroActa(models.Model):
     numero= models.IntegerField()
 
     class Meta:
