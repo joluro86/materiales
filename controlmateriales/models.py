@@ -10,8 +10,6 @@ class NumeroActa(models.Model):
     def __str__(self):
         return str('Acta # ' + str(self.numero))
 
-
-
 class Guia(models.Model):
     nombre_perseo = models.CharField(verbose_name='Nombre Perseo', max_length=100)
     nombre_fenix = models.CharField(verbose_name='Nombre Fenix', max_length=100)
@@ -22,7 +20,6 @@ class Guia(models.Model):
 
     def __str__(self):
         return str(self.nombre_perseo)
-
 
 class matperseo(models.Model):
     pedido=models.CharField(verbose_name='Pedido', max_length=10)
@@ -60,7 +57,6 @@ class matfenix(models.Model):
 
     def __str__(self):
         return str(self.pedido)
-
 
 class faltanteperseo(models.Model):
     concatenacion= models.CharField(verbose_name='Concat', max_length=100, default="0")
