@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export import resources
-from controlmateriales.models import Guia, faltanteperseo, matfenix, matperseo, NumeroActa
+from controlmateriales.models import Guia, matfenix, matperseo, NumeroActa
 from import_export.admin import ImportExportModelAdmin
 
 class GuiaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -21,6 +21,7 @@ admin.site.register(matperseo, MatPerseoAdmin)
 
 class FaltantePerseoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('concatenacion', 'pedido', 'actividad', 'fecha', 'codigo', 'cantidad', 'acta','cantidad_fenix','diferencia')
+"""
 admin.site.register(faltanteperseo, FaltantePerseoAdmin)
 
 
@@ -28,7 +29,7 @@ admin.site.register(faltanteperseo, FaltantePerseoAdmin)
 class FaltantePerseoResource(resources.ModelResource):
     class Meta:
         model = faltanteperseo
-
+"""
 class PerseoResource(resources.ModelResource):
     class Meta:
         model = matperseo

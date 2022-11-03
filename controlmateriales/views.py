@@ -8,7 +8,7 @@ from controlmateriales.models import *
 def reiniciar(request):
     matfenix.objects.all().delete()
     matperseo.objects.all().delete()
-    faltanteperseo.objects.all().delete()
+    NovedadPerseoVsFenix.objects.all().delete()
     return render(request, "index.html")
 
 
@@ -72,7 +72,7 @@ def gestionarbd(request):
 
     return render(request, "index.html")
 
-def calculo_faltantes_fenix(request):
+def calculo_diferencia_perseo_vs_fenix(request):
     faltantes=[]
     pedidos_perseo = matperseo.objects.all()
     for pedido_perseo in pedidos_perseo:
@@ -81,14 +81,14 @@ def calculo_faltantes_fenix(request):
             pedido_fenix = matfenix.objects.get(concatenacion=pedido_perseo.concatenacion)
 
             try:
-                existe_faltante = faltanteperseo.objects.get(concatenacion = pedido_fenix.concatenacion)
+                existe_faltante = NovedadPerseoVsFenix.objects.get(concatenacion = pedido_fenix.concatenacion)
                 existe_faltante.cantidad= existe_faltante.cantidad + pedido_perseo.cantidad
                 existe_faltante.diferencia = existe_faltante.cantidad - pedido_fenix.cantidad
                 existe_faltante.save()
 
             except:
                 if pedido_perseo.cantidad != pedido_fenix.cantidad:
-                    faltante= faltanteperseo()
+                    faltante= NovedadPerseoVsFenix()
                     faltante.concatenacion = pedido_perseo.concatenacion
                     faltante.pedido = pedido_perseo.pedido
                     faltante.actividad = pedido_perseo.actividad
@@ -101,7 +101,7 @@ def calculo_faltantes_fenix(request):
                     faltante.diferencia = pedido_perseo.cantidad - pedido_fenix.cantidad
                     faltante.save()        
         except:
-            falt= faltanteperseo()
+            falt= NovedadPerseoVsFenix()
             falt.concatenacion = pedido_perseo.concatenacion
             falt.pedido = pedido_perseo.pedido
             falt.actividad = pedido_perseo.actividad
@@ -113,7 +113,7 @@ def calculo_faltantes_fenix(request):
             falt.diferencia = -9999
             falt.save()
 
-        ped= faltanteperseo.objects.filter(diferencia=0)
+        ped= NovedadPerseoVsFenix.objects.filter(diferencia=0)
         ped.delete()
 
     calculo_numero_acta()
@@ -128,7 +128,7 @@ def calculo_numero_acta():
     for pedido_perseo in pedidos_perseo:
         try:
             if str(pedido_perseo.acta) != str(acta.numero):
-                faltante= faltanteperseo()
+                faltante= NovedadPerseoVsFenix()
                 faltante.concatenacion = pedido_perseo.concatenacion
                 faltante.pedido = pedido_perseo.pedido
                 faltante.actividad = pedido_perseo.actividad
@@ -141,6 +141,52 @@ def calculo_numero_acta():
                 faltante.save()                        
         except:
             print("error en el acta")
+
+def calculo_diferencia_fenix_vs_perseo(request):
+    faltantes=[]
+    pedidos_fenix = matfenix.objects.all()
+    for pedido_fenix in pedidos_fenix:
+        
+        try:
+            pedido_per = matperseo.objects.get(concatenacion=pedido_fenix.concatenacion)
+
+            try:
+                existe_faltante = NovedadPerseoVsFenix.objects.get(concatenacion = pedido_per.concatenacion)
+                existe_faltante.cantidad= existe_faltante.cantidad + pedido_fenix.cantidad
+                existe_faltante.diferencia = existe_faltante.cantidad - pedido_per.cantidad
+                existe_faltante.save()
+
+            except:
+                if pedido_fenix.cantidad != pedido_per.cantidad:
+                    faltante= NovedadPerseoVsFenix()
+                    faltante.concatenacion = pedido_fenix.concatenacion
+                    faltante.pedido = pedido_fenix.pedido
+                    faltante.actividad = pedido_fenix.actividad
+                    faltante.fecha = pedido_fenix.fecha
+                    faltante.codigo = pedido_fenix.codigo
+                    faltante.cantidad = pedido_fenix.cantidad
+                    faltante.observacion = "Cantidad no coincide"
+                    faltante.acta = pedido_fenix.acta
+                    faltante.cantidad_fenix = pedido_fenix.cantidad
+                    faltante.diferencia = pedido_fenix.cantidad - pedido_fenix.cantidad
+                    faltante.save()        
+        except:
+            falt= NovedadPerseoVsFenix()
+            falt.concatenacion = pedido_fenix.concatenacion
+            falt.pedido = pedido_fenix.pedido
+            falt.actividad = pedido_fenix.actividad
+            falt.fecha = pedido_fenix.fecha
+            falt.codigo = pedido_fenix.codigo
+            falt.cantidad = pedido_fenix.cantidad
+            falt.observacion = "No digitado en perseo"
+            falt.acta = pedido_fenix.acta
+            falt.diferencia = -9999
+            falt.save()
+
+        ped= NovedadPerseoVsFenix.objects.filter(diferencia=0)
+        ped.delete()
+
+    return render(request, "index.html")
 
 
 

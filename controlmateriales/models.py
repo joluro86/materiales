@@ -58,7 +58,7 @@ class matfenix(models.Model):
     def __str__(self):
         return str(self.pedido)
 
-class faltanteperseo(models.Model):
+class NovedadPerseoVsFenix(models.Model):
     concatenacion= models.CharField(verbose_name='Concat', max_length=100, default="0")
     pedido=models.CharField(verbose_name='Pedido', max_length=10)
     actividad=models.CharField(verbose_name='Actividad', max_length=500)
