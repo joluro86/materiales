@@ -11,7 +11,6 @@ def reiniciar(request):
     NovedadPerseoVsFenix.objects.all().delete()
     return render(request, "index.html")
 
-
 def index(request):
     return render(request, "index.html")
 
